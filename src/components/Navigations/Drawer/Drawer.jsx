@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import classes from './Drawer.module.css'
-import Backdrop from '../../UI/Backdrop/Backdrop'
+import Backdrop from '@components-ui/Backdrop/Backdrop'
 import {NavLink} from 'react-router-dom'
 class Drawer extends Component {
     handleClick = () => {

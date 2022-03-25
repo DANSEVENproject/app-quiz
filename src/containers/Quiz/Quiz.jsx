@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import classes from './Quiz.module.css'
-import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
-import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
-import Loader from '../../components/UI/Loader/Loader'
+import ActiveQuiz from '@components-active/ActiveQuiz'
+import FinishedQuiz from '@components-finish/FinishedQuiz'
+import Loader from '@components-ui/Loader/Loader'
 import {connect} from 'react-redux'
-import { fetchQuizById, quizAnswerClick, retryQuiz } from '../../store/actions/quiz'
+import { fetchQuizById, quizAnswerClick, retryQuiz } from '@actions/quiz'
 class Quiz extends Component {
     componentDidMount() {  
         this.props.fetchQuizById(this.props.match.params.id)

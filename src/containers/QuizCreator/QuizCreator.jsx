@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import classes from './QuizCreator.module.css'
-import Button from '../../components/UI/Button/Button'
-import {createControl, validate, validateForm} from '../../form/formFramework'
-import Input from '../../components/UI/Input/Input'
-import Select from '../../components/UI/Select/Select'
+import Button from '@components-ui/Button/Button'
+import {createControl, validate, validateForm} from '@form/formFramework'
+import Input from '@components-ui/Input/Input'
+import Select from '@components-ui/Select/Select'
 import { connect } from 'react-redux'
-import { createQuizQuestion, finishCreateQuiz } from '../../store/actions/actionCreate'
+import { createQuizQuestion, finishCreateQuiz } from '@actions/actionCreate'
 
 function createOptionControl(nameLabel, value, idQuestion) {
     return createControl({

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import classes from './Layout.module.css'
-import MenuToggle from '../../components/Navigations/MenuToggle/MenuToggle'
-import Drawer from '../../components/Navigations/Drawer/Drawer'
+import MenuToggle from '@components-nav/MenuToggle/MenuToggle'
+import Drawer from '@components-nav/Drawer/Drawer'
 import { connect } from 'react-redux'
 
 class Layout extends Component {

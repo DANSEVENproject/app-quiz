@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import Button from '../../components/UI/Button/Button'
+import Button from '@components-ui/Button/Button'
 import classes from './Auth.module.css'
-import Input from '../../components/UI/Input/Input'
+import Input from '@components-ui/Input/Input'
 import { connect } from 'react-redux'
-import { auth } from '../../store/actions/auth'
+import { auth } from '@actions/auth'
 
 const validateEmail = (email) => {
     return String(email)

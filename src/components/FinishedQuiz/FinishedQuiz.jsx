@@ -1,5 +1,5 @@
 import classes from './FinishedQuiz.module.css'
-import Button from '../UI/Button/Button'
+import Button from '@components-ui/Button/Button'
 import { Link } from 'react-router-dom'
 
 const FinishedQuiz = (props) => {
