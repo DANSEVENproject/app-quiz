@@ -1,6 +1,6 @@
 import classes from './Loader.module.css'
 
-const Loader = (props) => (
+const Loader = () => (
     <div className={classes.center}>
         <div className={classes.Loader}>
             <div /><div />

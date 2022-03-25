@@ -43,9 +43,9 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({auth}) {
   return {
-    isAuthenticated: !!state.auth.token
+    isAuthenticated: !!auth.token
   }
 }
 

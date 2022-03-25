@@ -1,9 +1,9 @@
 import classes from './Backdrop.module.css'
 
-const Backdrop = (props) => (
+const Backdrop = ({onClick}) => (
     <div 
         className={classes.Backdrop}
-        onClick={props.onClick}
+        onClick={onClick}
     />
 )
 

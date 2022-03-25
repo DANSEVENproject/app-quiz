@@ -1,4 +1,4 @@
-import axios from '../../axios/axios-quiz'
+import axios from '@axios'
 import { 
     FETCH_QUIZES_START, 
     FETCH_QUIZES_SUCCESS, 

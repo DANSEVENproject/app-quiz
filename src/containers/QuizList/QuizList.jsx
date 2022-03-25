@@ -42,10 +42,10 @@ class QuizList extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({quiz}) {
     return {
-        quizes: state.quiz.quizes,
-        loading: state.quiz.loading
+        quizes: quiz.quizes,
+        loading: quiz.loading
     }
 }
 
