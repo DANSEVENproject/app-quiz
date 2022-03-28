@@ -1,6 +1,6 @@
 export const logoutState = () => null
 
-export const isAuthenticated = (state) => {
+export const isAuthenticate = (state) => {
     return {
         isAuthenticated: !!state.auth.token
     }

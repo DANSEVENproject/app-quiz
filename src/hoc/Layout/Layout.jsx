@@ -3,11 +3,10 @@ import { useSelector } from 'react-redux'
 import classes from './Layout.module.css'
 import MenuToggle from 'components/Navigations/MenuToggle/MenuToggle'
 import Drawer from 'components/Navigations/Drawer/Drawer'
-import { connect } from 'react-redux'
+import { isAuthenticate } from 'store/selectors/selectors'
 
 const Layout = (props) => {
-    //eslint-disable-next-line
-    const selector = useSelector(state => {isAuthenticated: !!state.auth.token})
+    const selector = useSelector(isAuthenticate)
     const [state, setState] = useState({menu: false})
 
     const toggleMenuHandler = () => {
@@ -27,7 +26,7 @@ const Layout = (props) => {
             <Drawer 
                 isOpen={state.menu}
                 onClose={menuCloseHandler}
-                isAuthenticated={props.isAuthenticated}
+                isAuthenticated={selector.isAuthenticated}
             />
                 
             <MenuToggle 
@@ -42,10 +41,4 @@ const Layout = (props) => {
     )
 }
 
-function isAuthenticated(state) {
-    return {
-        isAuthenticated: !!state.auth.token
-    }
-}
-
-export default connect(isAuthenticated)(Layout)
+export default Layout
