@@ -8,6 +8,9 @@ const Input = (props) => {
     const inputType = props.type || 'text'
     const cls = [classes.Input]
     const htmlFor = `${inputType}-${Math.random()}`
+    const isValid = isInvalid(props) 
+    ?  <span>{props.errorMessage || 'Введите верное значение'}</span>
+    : null
 
     if (isInvalid(props)){
         cls.push(classes.invalid)
@@ -22,12 +25,7 @@ const Input = (props) => {
                 value={props.value}
                 onChange={props.onChange}
             />
-
-            {
-                isInvalid(props) 
-                ?  <span>{props.errorMessage || 'Введите верное значение'}</span>
-                : null
-            }
+            {isValid}
         </div>
     )
 }
