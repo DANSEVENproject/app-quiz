@@ -1,12 +1,12 @@
 import classes from './MenuToggle.module.css'
 
-const MenuToggle = (props) => {
+const MenuToggle = ({isOpen, onToggle}) => {
     const cls = [
         classes.MenuToggle,
         'fa'
     ]
 
-    if (props.isOpen) {
+    if (isOpen) {
         cls.push('fa-times')
         cls.push(classes.open)
     } else {
@@ -16,7 +16,7 @@ const MenuToggle = (props) => {
     return (
         <i
             className={cls.join(' ')}
-            onClick={props.onToggle}
+            onClick={onToggle}
         />
     )
 }
