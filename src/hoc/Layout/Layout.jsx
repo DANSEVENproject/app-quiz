@@ -5,7 +5,7 @@ import MenuToggle from 'components/Navigations/MenuToggle/MenuToggle'
 import Drawer from 'components/Navigations/Drawer/Drawer'
 import { isAuthenticate } from 'store/selectors/selectors'
 
-const Layout = (props) => {
+const Layout = ({children}) => {
     const selector = useSelector(isAuthenticate)
     const [state, setState] = useState({menu: false})
 
@@ -35,7 +35,7 @@ const Layout = (props) => {
             />
                 
             <main>
-                { props.children}
+                {children}
             </main>
         </div>
     )
