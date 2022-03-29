@@ -1,4 +1,4 @@
-export const logoutState = () => null
+export const logoutState = (state) => null
 
 export const isAuthenticate = (state) => {
     return {
