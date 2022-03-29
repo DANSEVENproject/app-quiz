@@ -2,6 +2,7 @@ import React, {useCallback} from 'react'
 import classes from './Drawer.module.css'
 import Backdrop from 'components/UI/Backdrop/Backdrop'
 import {NavLink} from 'react-router-dom'
+
 const Drawer = (props) => {
     const cls = [classes.Drawer]
     if (!props.isOpen) {
