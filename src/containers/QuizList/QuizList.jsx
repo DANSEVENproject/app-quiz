@@ -1,13 +1,18 @@
-import React, {Component} from 'react'
+import {useCallback, useEffect} from 'react'
 import { NavLink } from 'react-router-dom'
 import classes from './QuizList.module.css'
 import Loader from 'components/UI/Loader/Loader'
-import {connect} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {fetchQuizes} from 'store/actions/quiz'
+import { quizListToProps } from 'store/selectors/selectors'
 
-class QuizList extends Component {
-    renderQuizes() {
-        return this.props.quizes.map(quiz => {
+const QuizList = () => {
+    const dispatch = useDispatch()
+    const selector = useSelector(quizListToProps)
+
+    //eslint-disable-next-line
+    const renderQuizes = useCallback(
+        selector.quizes.map(quiz => {
             return (
                 <li
                     key={quiz.id}
@@ -18,41 +23,25 @@ class QuizList extends Component {
                 </li>
             )
         })
-    }
+    , [selector.quizes])
 
-    componentDidMount() {
-        this.props.fetchQuizes()
-    }
+    //eslint-disable-next-line
+    useEffect(() => dispatch(fetchQuizes()), [])
 
-    render() {
-        return (
-            <div className={classes.QuizList}>
-                <div>
-                    <h1>Список тестов</h1>
-                {
-                    this.props.loading && this.props.quizes.length !== 0
-                      ? <Loader />
-                      : <ul>
-                          {this.renderQuizes() }
-                        </ul>
-                }
-                </div>
+    return (
+        <div className={classes.QuizList}>
+            <div>
+                <h1>Список тестов</h1>
+            {
+                 selector.loading && selector.quizes.length !== 0
+                  ? <Loader />
+                  : <ul>
+                      {renderQuizes}
+                    </ul>
+            }
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-function mapStateToProps({quiz}) {
-    return {
-        quizes: quiz.quizes,
-        loading: quiz.loading
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        fetchQuizes: () => dispatch(fetchQuizes())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuizList)
+export default QuizList

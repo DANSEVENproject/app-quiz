@@ -5,3 +5,10 @@ export const isAuthenticate = (state) => {
         isAuthenticated: !!state.auth.token
     }
 }
+
+export const quizListToProps = ({ quiz }) => {
+    return {
+        quizes: quiz.quizes,
+        loading: quiz.loading
+    }
+}
