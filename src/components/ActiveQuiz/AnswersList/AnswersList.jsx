@@ -13,14 +13,13 @@ const AnswersList = (props) => {
                 state={props.state ? props.state[answer.id] : null}
             />
         )
-    }), [props.answers])
+    }), [props.state])
 
     return (
         <ul className={classes.AnswersList}>
                 {answersMap}
         </ul>
-    )
-    
+    )   
 }
 
 export default AnswersList
