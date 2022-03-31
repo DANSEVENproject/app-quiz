@@ -12,3 +12,9 @@ export const quizListToProps = ({ quiz }) => {
         loading: quiz.loading
     }
 }
+
+export const quizCreate = (state) => {
+    return {
+        quiz: state.create.quiz
+    }
+}

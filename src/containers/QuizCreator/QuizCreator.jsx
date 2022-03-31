@@ -1,11 +1,12 @@
-import React, {Component} from 'react'
+import React,{useCallback, useState} from 'react'
 import classes from './QuizCreator.module.css'
 import Button from 'components/UI/Button/Button'
 import {createControl, validate, validateForm} from 'form/formFramework'
 import Input from 'components/UI/Input/Input'
 import Select from 'components/UI/Select/Select'
-import { connect } from 'react-redux'
 import { createQuizQuestion, finishCreateQuiz } from 'store/actions/actionCreate'
+import { useDispatch, useSelector } from 'react-redux'
+import {quizCreate} from 'store/selectors/selectors'
 
 function createOptionControl(nameLabel, value, idQuestion) {
     return createControl({
@@ -25,24 +26,30 @@ function createFormControls() {
     }
 }
 
-class QuizCreator extends Component {
-    state = {
+const QuizCreator = () => {
+    const selector = useSelector(quizCreate)
+    const dispatch = useDispatch()
+    const props = {
+        createQuizQuestion: item => dispatch(createQuizQuestion(item)),
+        finishCreateQuiz: () => dispatch(finishCreateQuiz())
+    }
+    const [state, setState] = useState({
         formControls: createFormControls(),
         rightAnswerId: 1,
         isFormValid: false
-    }
-
-    submitHandler = (event) => {
+    })
+    
+    const submitHandler = (event) => {
         event.preventDefault()
     }
 
-    addQuestionHandler = (event) => {
+    const addQuestionHandler = (event) => {
         event.preventDefault()
-        const {question, option1, option2, option3, option4} = this.state.formControls
+        const {question, option1, option2, option3, option4} = state.formControls
         const questionItem = {
             question: question.value,
-            id: this.props.quiz.length + 1,
-            rightAnswerId: this.state.rightAnswerId,
+            id: selector.quiz.length + 1,
+            rightAnswerId: state.rightAnswerId,
             answers: [
                 {text: option1.value, id: option1.id},
                 {text: option2.value, id: option2.id},
@@ -50,27 +57,34 @@ class QuizCreator extends Component {
                 {text: option4.value, id: option4.id}
             ]
         }
-        this.props.createQuizQuestion(questionItem)
-
-        this.setState({
+        props.createQuizQuestion(questionItem)
+        setState({
             formControls: createFormControls(),
             rightAnswerId: 1,
             isFormValid: false
         })
     }
 
-    createQuizHandler = (event) => {
-        event.preventDefault()
-        this.setState({
-            formControls: createFormControls(),
-            rightAnswerId: 1,
-            isFormValid: false 
-        })
-        this.props.finishCreateQuiz()
+    const selectChangeHandler = (event) => {
+        setState(state => ({
+            ...state,
+            rightAnswerId: +event.target.value
+        }))
     }
 
-    changeHandler = (value, controlName) => {
-        const formControls = {...this.state.formControls}
+    const createQuizHandler = (event) => {
+        event.preventDefault()
+        setState({
+            formControls: createFormControls(),
+            rightAnswerId: 1,
+            isFormValid: false
+        })
+        props.finishCreateQuiz()
+        selector.quiz.length = 0
+    }
+
+    const changeHandler = (value, controlName) => {
+        const formControls = {...state.formControls}
         const control = {...formControls[controlName]}
 
         control.touched = true
@@ -79,15 +93,15 @@ class QuizCreator extends Component {
 
         formControls[controlName] = control
 
-        this.setState({
+        setState({
             formControls,
             isFormValid: validateForm(formControls)
         })
     }
-
-    renderControls() {
-        return Object.keys(this.state.formControls).map((controlName, index) => {
-            const control = this.state.formControls[controlName]
+    //eslint-disable-next-line
+    const renderControls = useCallback(
+        Object.keys(state.formControls).map((controlName, index) => {
+            const control = state.formControls[controlName]
 
             return (
                 <React.Fragment key={controlName + index}>
@@ -98,74 +112,52 @@ class QuizCreator extends Component {
                         shouldValidate={!!control.validation}
                         touched={control.touched}
                         errorMessage={control.errorMessage}
-                        onChange={event => this.changeHandler(event.target.value, controlName)}
+                        onChange={event => changeHandler(event.target.value, controlName)}
                     />
                     { index === 0 ? <hr /> : null}
                 </React.Fragment>
             )
-        })
-    }
+        }), [state.formControls])
+   
+    return (
+        <div className={classes.QuizCreator}>
+            <div>
+                <h1>Создание теста</h1>
+            
+                <form onSubmit={submitHandler}>
 
-    selectChangeHandler = (event) => {
-        this.setState({
-            rightAnswerId: +event.target.value
-        })
-    }
+                    {renderControls}
 
-    render() {
-        return (
-            <div className={classes.QuizCreator}>
-                <div>
-                    <h1>Создание теста</h1>
-                
-                    <form onSubmit={this.submitHandler}>
+                    <Select 
+                        label='Выберите правильный ответ'
+                        value={state.rightAnswerId}
+                        onChange={selectChangeHandler}
+                        options={[
+                            {text:1, value: 1},
+                            {text:2, value: 2},
+                            {text:3, value: 3},
+                            {text:4, value: 4}
+                        ]}
+                    />
 
-                        {this.renderControls()}
-
-                        <Select 
-                            label='Выберите правильный ответ'
-                            value={this.state.rightAnswerId}
-                            onChange={this.selectChangeHandler}
-                            options={[
-                                {text:1, value: 1},
-                                {text:2, value: 2},
-                                {text:3, value: 3},
-                                {text:4, value: 4}
-                            ]}
-                        />
-
-                        <Button
-                            type='primary'
-                            onClick={this.addQuestionHandler}
-                            disabled={!this.state.isFormValid}
-                        >
-                            Добавить вопрос
-                        </Button>
-                        <Button
-                            type='success'
-                            onClick={this.createQuizHandler}
-                            disabled={this.props.quiz.length === 0}
-                        >
-                            Создать тест
-                        </Button>
-                    </form>
-                </div>
+                    <Button
+                        type='primary'
+                        onClick={addQuestionHandler}
+                        disabled={!state.isFormValid}
+                    >
+                        Добавить вопрос
+                    </Button>
+                    <Button
+                        type='success'
+                        onClick={createQuizHandler}
+                        disabled={selector.quiz.length === 0}
+                    >
+                        Создать тест
+                    </Button>
+                </form>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-function mapStateToProps(state) {
-    return {
-        quiz: state.create.quiz
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        createQuizQuestion: item => dispatch(createQuizQuestion(item)),
-        finishCreateQuiz: () => dispatch(finishCreateQuiz())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator)
+export default QuizCreator
