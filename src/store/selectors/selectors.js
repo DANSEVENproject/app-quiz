@@ -1,21 +1,13 @@
 export const logoutState = (state) => null
 
-export const isAuthenticate = (state) => {
-    return {
-        isAuthenticated: !!state.auth.token
-    }
-}
+export const isAuthenticate = (state) => ({ isAuthenticated: !!state.auth.token })
+
+export const quizCreate = (state) => ({ quiz: state.create.quiz })
 
 export const quizListToProps = ({ quiz }) => {
     return {
         quizes: quiz.quizes,
         loading: quiz.loading
-    }
-}
-
-export const quizCreate = (state) => {
-    return {
-        quiz: state.create.quiz
     }
 }
 

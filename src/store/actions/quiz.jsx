@@ -7,7 +7,8 @@ import {
     QUIZ_SET_STATE, 
     FINISH_QUIZ, 
     QUIZ_NEXT_QUESTION, 
-    QUIZ_RETRY 
+    QUIZ_RETRY,
+    ONE_SECOND
 } from './actionTypes'
 
 export function fetchQuizes() {
@@ -123,7 +124,7 @@ export function quizAnswerClick(answerId) {
                     dispatch(quizNextQuestion(state.activeQuestion + 1))
                 }
                 window.clearTimeout(timeout);
-            }, 1000)
+            }, ONE_SECOND)
         } else {
             results[question.id] = 'error'
             dispatch(quizSetState({[answerId]: 'error'}, results))

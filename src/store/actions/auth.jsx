@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {AUTH_SUCCESS, AUTH_LOGOUT} from './actionTypes'
+import {AUTH_SUCCESS, AUTH_LOGOUT, ONE_SECOND} from './actionTypes'
 
 export function auth(email, password, isLogin) {
     return async dispatch => {
@@ -16,7 +16,7 @@ export function auth(email, password, isLogin) {
 
         const response = await axios.post(url, authData)
         const data = response.data
-        const expirationDate = new Date(new Date().getTime() + data.expiresIn * 1000)
+        const expirationDate = new Date(new Date().getTime() + data.expiresIn * ONE_SECOND)
 
         localStorage.setItem('token', data.idToken)
         localStorage.setItem('userId', data.localId)
@@ -31,7 +31,7 @@ export function authLogout(time) {
     return dispatch => {
         setTimeout(() => {
             dispatch(logout())
-        }, time * 1000)
+        }, time * ONE_SECOND)
     }
 }
 
@@ -56,7 +56,7 @@ export function autoLogin() {
                 dispatch(logout())
             } else {
                 dispatch(authSuccess(token))
-                dispatch(authLogout((expirationDate.getTime() - new Date().getTime()) / 1000))
+                dispatch(authLogout((expirationDate.getTime() - new Date().getTime()) / ONE_SECOND))
             }
         }
     }
