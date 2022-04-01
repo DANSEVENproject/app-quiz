@@ -35,10 +35,12 @@ const Quiz = (props) => {
 
     useEffect(() => {  
         otherProps.fetchQuizById(props.match.params.id)
+        //eslint-disable-next-line
     }, [])
 
     useEffect(() => {
         otherProps.retryQuiz()
+        //eslint-disable-next-line
     }, [])
 
     return (
