@@ -18,3 +18,14 @@ export const quizCreate = (state) => {
         quiz: state.create.quiz
     }
 }
+
+export const quizProps = ({ quiz }) => {
+    return {
+        results: quiz.results,
+        isFinished: quiz.isFinished,
+        activeQuestion: quiz.activeQuestion,
+        answerState: quiz.answerState,
+        quiz: quiz.quiz,
+        loading: quiz.loading
+    }
+}
