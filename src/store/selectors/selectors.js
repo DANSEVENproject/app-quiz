@@ -1,6 +1,6 @@
 export const logoutState = (state) => null
 
-export const isAuthenticate = (state) => ({ isAuthenticated: !!state.auth.token })
+export const isAuthenticate = ({ auth }) => ({ isAuthenticated: !!auth.token })
 
 export const quizCreate = (state) => ({ quiz: state.create.quiz })
 

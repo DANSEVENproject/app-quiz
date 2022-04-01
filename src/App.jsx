@@ -1,58 +1,52 @@
-import React, {Component} from 'react'
+import {useEffect} from 'react'
 import Layout from 'hoc/Layout/Layout'
 import {Route, Switch, Redirect, withRouter} from 'react-router-dom'
 import Quiz from 'containers/Quiz/Quiz'
 import QuizList from 'containers/QuizList/QuizList'
 import QuizCreator from 'containers/QuizCreator/QuizCreator'
 import Auth from 'containers/Auth/Auth'
-import { connect } from 'react-redux'
+import {useDispatch, useSelector } from 'react-redux'
 import Logout from 'components/Logout/logout'
 import { autoLogin } from 'store/actions/auth'
+import { isAuthenticate } from 'store/selectors/selectors'
 
-class App extends Component {
-  componentDidMount() {
-    this.props.autoLogin()
-  }
+const App = () => {
+  const dispatch = useDispatch()
+  const selector = useSelector(isAuthenticate)
 
-  render() {
-    let routes = (
-      <Switch>
-        <Route path='/auth' component={Auth}/>
-        <Route path='/quiz/:id' component={Quiz}/>
-        <Route path='/' exact component={QuizList}/>
-        <Redirect to="/" />
-      </Switch>
-    )
-    if (this.props.isAuthenticated) {
-      routes = (
+  useEffect(() => {
+    dispatch(autoLogin())
+    //eslint-disable-next-line
+  }, [selector.isAuthenticated])
+
+  const conditionStructure = () => {
+    if(!selector.isAuthenticated) {
+      return (
         <Switch>
-            <Route path='/quiz-creator' component={QuizCreator}/>
-            <Route path='/quiz/:id' component={Quiz}/>
-            <Route path='/logout' component={Logout} />
-            <Route path='/' exact component={QuizList}/>
-            <Redirect to="/" />
+          <Route path='/auth' component={Auth}/>
+          <Route path='/quiz/:id' component={Quiz}/>
+          <Route path='/' exact component={QuizList}/>
+          <Redirect to="/" />
+        </Switch>
+      )
+    } else {
+      return (
+        <Switch>
+          <Route path='/quiz-creator' component={QuizCreator}/>
+          <Route path='/quiz/:id' component={Quiz}/>
+          <Route path='/logout' component={Logout} />
+          <Route path='/' exact component={QuizList}/>
+          <Redirect to="/" />
         </Switch>
       )
     }
-
-    return (
-      <Layout>
-        { routes }
-      </Layout>
-    )
   }
+
+  return (
+    <Layout>
+      { conditionStructure() }
+    </Layout>
+  )
 }
 
-function mapStateToProps({auth}) {
-  return {
-    isAuthenticated: !!auth.token
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    autoLogin: () => dispatch(autoLogin())
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter(App)
