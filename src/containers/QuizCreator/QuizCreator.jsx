@@ -95,6 +95,7 @@ const QuizCreator = () => {
 
         setState({
             formControls,
+            rightAnswerId: 1,
             isFormValid: validateForm(formControls)
         })
     }
